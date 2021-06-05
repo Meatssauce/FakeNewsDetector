@@ -1,6 +1,0 @@
-todo add feature: freq of hyperbole and slang phrases
-todo add feature: formal or casual or super casual
-todo add feature: tone of voice of article e.g. neutral, fear-mongering, provocative, shocked, light
-todo add feature: word counts? greater than 8 words?
-todo add feature: freq of ! and ?
-todo add feature: bounce rate
