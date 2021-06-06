@@ -34,7 +34,7 @@ def predict(df_in=None, should_save_csv=False):
     if should_save_csv:
         df_out = df_in[['id']]
         df_out['labels'] = class_predictions
-        df_out.to_csv('dataset/predictions.csv')
+        df_out.to_csv('dataset/predictions.csv', index=False)
 
     return class_predictions
 
