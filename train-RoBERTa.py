@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 
-def main():
+def train():
     df = pd.read_csv('dataset/train.csv')
     df = df.fillna('')
     df = df.rename(columns={'label': 'labels'})
@@ -83,7 +83,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    train()
 
 # {'eval_loss': 0.006559914909303188, 'eval_accuracy': 0.9990384615384615, 'eval_f1': 0.9990393852065321,
 # 'eval_precision': 0.9996155324875048, 'eval_recall': 0.9984639016897081, 'eval_runtime': 106.7908,

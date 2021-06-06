@@ -5,10 +5,19 @@ import numpy as np
 
 
 def predict(df_in=None, should_save_csv=False):
+    """
+    Predicts whether or not a news article is reliable.
+
+    :param df_in: pandas dataframe object containing the news articles. If None, will read .csv file from disk
+    :param should_save_csv: if True, will also save the output as a .csv file
+    :return: a list of 1s and 0s indicating if each input article is reliable
+    """
+
     if df_in is not None:
         df_in = pd.read_csv('dataset/test.csv')
     df_in = df_in.fillna('')
 
+    # might move this outside the function to improve performance when repeatedly calling predict()
     model = RobertaForSequenceClassification.from_pretrained('saved-models/roBERTa-base/')
     tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
 
@@ -32,8 +41,3 @@ def predict(df_in=None, should_save_csv=False):
 
 if __name__ == '__main__':
     predict()
-
-# upon trainer.predict(dataset)
-# UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 due to no predicted samples.
-# Use `zero_division` parameter to control this behavior.
-#   _warn_prf(average, modifier, msg_start, len(result))
