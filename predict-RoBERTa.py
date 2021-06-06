@@ -2,6 +2,14 @@ import pandas as pd
 from transformers import RobertaTokenizerFast, RobertaForSequenceClassification
 from torch.nn.functional import softmax
 import numpy as np
+import argparse
+
+
+parser = argparse.ArgumentParser(description='FakeNews-roBERTa')
+parser.add_argument('--input_dir', type=str, default='dataset/test.csv')
+parser.add_argument('--output_dir', type=str, default='dataset/predictions.csv')
+parser.add_argument('--model_dir', type=str, default='saved-models/roBERTa-base/')
+args = parser.parse_args()
 
 
 def predict(df_in=None, should_save_csv=False):
@@ -14,11 +22,11 @@ def predict(df_in=None, should_save_csv=False):
     """
 
     if df_in is not None:
-        df_in = pd.read_csv('dataset/test.csv')
+        df_in = pd.read_csv(args.input_dir)
     df_in = df_in.fillna('')
 
     # might move this outside the function to improve performance when repeatedly calling predict()
-    model = RobertaForSequenceClassification.from_pretrained('saved-models/roBERTa-base/')
+    model = RobertaForSequenceClassification.from_pretrained(args.model_dir)
     tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
 
     inputs = tokenizer(
@@ -34,7 +42,7 @@ def predict(df_in=None, should_save_csv=False):
     if should_save_csv:
         df_out = df_in[['id']]
         df_out['labels'] = class_predictions
-        df_out.to_csv('dataset/predictions.csv', index=False)
+        df_out.to_csv(args.output_dir, index=False)
 
     return class_predictions
 
