@@ -15,6 +15,9 @@ def main():
     df = pd.read_csv('dataset/train.csv')
     df = df.fillna('')
     df = df.rename(columns={'label': 'labels'})
+    df['text'] = df['title'] + '\n\n' + df['text']
+    df = df.drop(columns=['id', 'title'])
+
     dataset = datasets.Dataset.from_pandas(df)
     dataset.features['labels'] = datasets.ClassLabel(num_classes=2, names=['unreliable', 'reliable'])
     # dataset = dataset.map(lambda examples: {'labels': examples['label']}, batched=True)
@@ -37,7 +40,7 @@ def main():
 
     # define the training arguments
     training_args = TrainingArguments(
-        output_dir='/media/jlealtru/data_files/github/website_tutorials/results',
+        output_dir='trainer/results',
         num_train_epochs=3,
         per_device_train_batch_size=4,
         gradient_accumulation_steps=16,
@@ -49,7 +52,7 @@ def main():
         weight_decay=0.01,
         logging_steps=8,
         fp16=True,
-        logging_dir='/media/jlealtru/data_files/github/website_tutorials/logs',
+        logging_dir='trainer/logs',
         dataloader_num_workers=2,
         run_name='roberta-classification'
     )
@@ -86,7 +89,7 @@ def main():
 if __name__ == '__main__':
     main()
 
-# {'eval_loss': 0.007568109780550003, 'eval_accuracy': 0.9988461538461538, 'eval_f1': 0.9988479262672811,
-# 'eval_precision': 0.9988479262672811, 'eval_recall': 0.9988479262672811, 'eval_runtime': 107.348,
-# 'eval_samples_per_second': 48.441, 'epoch': 3.0}
-# {'train_runtime': 1868.8471, 'train_samples_per_second': 0.39, 'epoch': 3.0}
+# {'eval_loss': 0.006559914909303188, 'eval_accuracy': 0.9990384615384615, 'eval_f1': 0.9990393852065321,
+# 'eval_precision': 0.9996155324875048, 'eval_recall': 0.9984639016897081, 'eval_runtime': 106.7908,
+# 'eval_samples_per_second': 48.693, 'epoch': 3.0}
+# {'train_runtime': 1875.6339, 'train_samples_per_second': 0.389, 'epoch': 3.0}
