@@ -4,15 +4,28 @@ from torch.nn.functional import softmax
 import numpy as np
 import argparse
 
+"""
+Either import this file and use the predict_reliability() function directly in another python script e.g.
+from predict import predict_reliability
+df_in = ... # a pandas dataframe object
+predictions = predict_reliability(df_in)
+    Note: you can also pass no input to the function in which case it will read from the default input csv file path
+or run in cmd via
+predict --input_dir [input path] --output_dir [output put]
+
+You would need to have installed everything in the requirements.txt in both cases via command
+pip install -r requirements.txt
+"""
+
 
 parser = argparse.ArgumentParser(description='FakeNews-roBERTa')
-parser.add_argument('--input_dir', type=str, default='dataset/test.csv')
-parser.add_argument('--output_dir', type=str, default='dataset/predictions.csv')
+parser.add_argument('--input_path', type=str, default='dataset/test-simple.csv')
+parser.add_argument('--output_path', type=str, default='dataset/predictions.csv')
 parser.add_argument('--model_dir', type=str, default='saved-models/roBERTa-base/')
 args = parser.parse_args()
 
 
-def predict(df_in=None, should_save_csv=False):
+def predict_reliability(df_in=None, should_save_csv=False):
     """
     Predicts whether or not a news article is reliable.
 
@@ -21,8 +34,8 @@ def predict(df_in=None, should_save_csv=False):
     :return: a list of 1s and 0s indicating if each input article is reliable
     """
 
-    if df_in is not None:
-        df_in = pd.read_csv(args.input_dir)
+    if df_in is None:
+        df_in = pd.read_csv(args.input_path)
     df_in = df_in.fillna('')
 
     # might move this outside the function to improve performance when repeatedly calling predict()
@@ -42,10 +55,10 @@ def predict(df_in=None, should_save_csv=False):
     if should_save_csv:
         df_out = df_in[['id']]
         df_out['labels'] = class_predictions
-        df_out.to_csv(args.output_dir, index=False)
+        df_out.to_csv(args.output_path, index=False)
 
     return class_predictions
 
 
 if __name__ == '__main__':
-    predict()
+    predict_reliability(should_save_csv=True)

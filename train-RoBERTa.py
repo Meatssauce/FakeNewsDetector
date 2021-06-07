@@ -49,7 +49,7 @@ def train():
         logging_steps=8,
         fp16=True,
         logging_dir='trainer/logs',
-        dataloader_num_workers=2,
+        dataloader_num_workers=4,
         run_name='roberta-classification'
     )
 

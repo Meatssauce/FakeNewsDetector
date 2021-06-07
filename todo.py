@@ -3,3 +3,10 @@
 # todo: add feature - tone of voice of article e.g. neutral, fear-mongering, provocative, shocked, light
 # todo: add feature - bounce rate
 # todo: remove stop words and punctuations if not using GPT2
+
+from predict import predict_reliability
+
+predictions = predict_reliability()
+
+print(predictions)
+
