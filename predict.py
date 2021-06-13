@@ -25,7 +25,7 @@ parser.add_argument('--model_dir', type=str, default='saved-models/roBERTa-base/
 args = parser.parse_args()
 
 
-def predict_reliability(df_in=None, should_save_csv=False):
+def predict_reliability(model, tokenizer, df_in=None, should_save_csv=False):
     """
     Predicts whether or not a news article is reliable.
 
@@ -39,8 +39,8 @@ def predict_reliability(df_in=None, should_save_csv=False):
     df_in = df_in.fillna('')
 
     # might move this outside the function to improve performance when repeatedly calling predict()
-    model = RobertaForSequenceClassification.from_pretrained(args.model_dir)
-    tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
+    # model = RobertaForSequenceClassification.from_pretrained(args.model_dir)
+    # tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
 
     inputs = tokenizer(
         df_in['text'].tolist(),
