@@ -21,11 +21,11 @@ pip install -r requirements.txt
 parser = argparse.ArgumentParser(description='FakeNews-roBERTa')
 parser.add_argument('--input_path', type=str, default='dataset/test-simple.csv')
 parser.add_argument('--output_path', type=str, default='dataset/predictions.csv')
-parser.add_argument('--model_dir', type=str, default='saved-models/roBERTa-base/')
+parser.add_argument('--model_dir', type=str, default='saved-models/roBERTa-base-2/')
 args = parser.parse_args()
 
 
-def predict_reliability(model, tokenizer, df_in=None, should_save_csv=False):
+def predict_reliability(model=None, tokenizer=None, df_in=None, should_save_csv=False):
     """
     Predicts whether or not a news article is reliable.
 
@@ -38,9 +38,10 @@ def predict_reliability(model, tokenizer, df_in=None, should_save_csv=False):
         df_in = pd.read_csv(args.input_path)
     df_in = df_in.fillna('')
 
-    # might move this outside the function to improve performance when repeatedly calling predict()
-    # model = RobertaForSequenceClassification.from_pretrained(args.model_dir)
-    # tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
+    if model is None:
+        model = RobertaForSequenceClassification.from_pretrained(args.model_dir)
+    if tokenizer is None:
+        tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
 
     inputs = tokenizer(
         df_in['text'].tolist(),
