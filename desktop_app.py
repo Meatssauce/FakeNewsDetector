@@ -26,6 +26,8 @@ def is_reliable_news(url, model, tokenizer):
 
     if news.language != 'en':
         raise NotImplementedError(f'Unsupported language: {news.language}')
+    if len(news.article.split()) < 80:
+        raise UserWarning('Article is too short')
 
     # Determine if news is reliable
     df = pd.DataFrame({'text': [news.headline + '\n\n' + news.article]})
@@ -41,7 +43,7 @@ def run():
               [sg.T('Check if news article is reliable for free')],
               [sg.T('URL'), sg.In(key='-INPUT-'), sg.Button('GO')],
               [sg.HSeparator()],
-              [sg.T(size=(40, 1), key='-OUTPUT-')]]
+              [sg.T(size=(50, 1), key='-OUTPUT-')]]
 
     # Create the window
     window = sg.Window("Pravda", layout)
@@ -68,6 +70,8 @@ def run():
                 window['-OUTPUT-'].update('Result: Error! Invalid URL')
             except NotImplementedError:
                 window['-OUTPUT-'].update('Result: Error! The article must be in English')
+            except UserWarning:
+                window['-OUTPUT-'].update('Article is too short. Ensure article is not locked behind paywall.')
 
     window.close()
 
