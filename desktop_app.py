@@ -34,7 +34,7 @@ def is_reliable_news(url, model, tokenizer):
     return reliable
 
 
-def main():
+def run():
     sg.theme('Black')
 
     layout = [[sg.T('Pravda News Checker', font=("Helvetica", 16))],
@@ -73,4 +73,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run()
