@@ -28,7 +28,7 @@ def is_reliable_news(url, model, tokenizer):
         raise NotImplementedError(f'Unsupported language: {news.language}')
 
     # Determine if news is reliable
-    df = pd.DataFrame({'title': [news.headline], 'author': [news.authors], 'text': [news.article]})
+    df = pd.DataFrame({'text': [news.headline + '\n\n' + news.article]})
     reliable = predict_reliability(model, tokenizer, df)
 
     return reliable
@@ -37,16 +37,17 @@ def is_reliable_news(url, model, tokenizer):
 def main():
     sg.theme('Black')
 
-    layout = [[sg.T('Source URL')],
-              [sg.In(key='-INPUT-'), sg.Button('GO')],
+    layout = [[sg.T('Pravda News Checker', font=("Helvetica", 16))],
+              [sg.T('Check if news article is reliable for free')],
+              [sg.T('URL'), sg.In(key='-INPUT-'), sg.Button('GO')],
               [sg.HSeparator()],
               [sg.T(size=(40, 1), key='-OUTPUT-')]]
 
     # Create the window
-    window = sg.Window("Pravda - The Fake News Detector", layout)
+    window = sg.Window("Pravda", layout)
 
     # Load model
-    model = RobertaForSequenceClassification.from_pretrained('saved-models/roBERTa-base/')
+    model = RobertaForSequenceClassification.from_pretrained('saved-models/roBERTa-base-2/')
     tokenizer = RobertaTokenizerFast.from_pretrained('roberta-base', max_length=512)
 
     # Create an event loop
@@ -56,6 +57,7 @@ def main():
         if event == sg.WIN_CLOSED:
             break
         if event == 'GO':
+            # window['-OUTPUT-'].update('Checking...')
             url = values['-INPUT-']
             try:
                 if is_reliable_news(url, model, tokenizer):
