@@ -59,7 +59,7 @@ def predict():
     """
 
     if request.method == 'POST':
-        data = request.get_json()
+        data = request.get_json(force=True)
         urls = data['urls']
 
         flags = [0] * len(urls)
