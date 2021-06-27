@@ -1,9 +1,9 @@
+import re
 import PySimpleGUI as sg
 import pandas as pd
 from newsfetch.news import newspaper
 from predict import predict_reliability
 from transformers import RobertaTokenizerFast, RobertaForSequenceClassification
-import re
 
 
 def is_reliable_news(url, model, tokenizer):

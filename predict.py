@@ -1,8 +1,8 @@
 import pandas as pd
-from transformers import RobertaTokenizerFast, RobertaForSequenceClassification
-from torch.nn.functional import softmax
 import numpy as np
 import argparse
+from transformers import RobertaTokenizerFast, RobertaForSequenceClassification
+from torch.nn.functional import softmax
 
 """
 Either import this file and use the predict_reliability() function directly in another python script e.g.

@@ -1,7 +1,7 @@
 import pandas as pd
 import datasets as ds
-from transformers import RobertaTokenizerFast, RobertaForSequenceClassification, Trainer, TrainingArguments
 import torch
+from transformers import RobertaTokenizerFast, RobertaForSequenceClassification, Trainer, TrainingArguments
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 
